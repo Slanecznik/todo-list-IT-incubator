@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {FilterValues, Task} from "./App";
 import { Button } from "./Button";
 
@@ -5,17 +6,26 @@ type Props = {
     title: string
     tasks: Task[]
     date?:string
-    deleteTask: (taskId: number) => void
+    deleteTask: (taskId: string) => void
     changeFilter: (filter:FilterValues) => void
+    createTask: (title: string) => void
 }
 
-export const TodolistItem = ({title, tasks, date, deleteTask,changeFilter}: Props) => {
+export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter,createTask}: Props) => {
+
+    const [taskTitle, setTaskTitle] = useState('')
+
+    const createTaskHandler = () => {
+        createTask(taskTitle)
+        setTaskTitle('')
+    }
+
     return (
         <div>
             <h3>{title}</h3>
             <div>
-                <input/>
-                <Button title={'+'} />
+                <input value={taskTitle} onChange={event => setTaskTitle(event.currentTarget.value)}/>
+                <Button title={'+'} onClick={createTaskHandler}/>
             </div>
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
