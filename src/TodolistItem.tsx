@@ -15,7 +15,6 @@ type Props = {
 export const TodolistItem = ({
                                  title,
                                  tasks,
-                                 date,
                                  deleteTask,
                                  changeFilter,
                                  createTask,
@@ -114,8 +113,6 @@ export const TodolistItem = ({
                             title={'Completed'}
                             onClick={() => changeFilter('completed')}/>
                 </div>
-
-                <div>{date}</div>
             </div>
         </div>
     )

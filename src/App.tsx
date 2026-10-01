@@ -9,9 +9,17 @@ export type Task = {
     isDone: boolean
 }
 
+export type Todolist = {
+    id: string
+    title: string
+    filter: FilterValues
+}
+
 export type FilterValues = 'all' | 'active' | 'completed'
 
 export const App = () => {
+
+    const [filter, setFilter] = useState<FilterValues>('all')
 
     const [tasks, setTasks] = useState<Task[]>([
         {id: v1(), title: 'HTML&CSS', isDone: true},
@@ -28,9 +36,6 @@ export const App = () => {
         })
         setTasks(filteredTasks)
     }
-
-
-    const [filter, setFilter] = useState<FilterValues>('all')
 
     const changeFilter = (filter: FilterValues) => {
         setFilter(filter)
@@ -62,7 +67,6 @@ export const App = () => {
                 changeFilter={changeFilter}
                 createTask={createTask}
                 changeTaskStatus={changeTaskStatus}
-                date="31.07.2026"
                 />
         </div>
     )
