@@ -12,6 +12,10 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import {NavButton} from "./NavButton.ts"
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Switch from '@mui/material/Switch'
+import CssBaseline from '@mui/material/CssBaseline'
+
+type ThemeMode = 'dark' | 'light'
 
 export type Task = {
     id: string
@@ -53,6 +57,8 @@ export const App = () => {
         ],
     })
 
+    const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+
     const theme = createTheme({
         palette: {
             primary: {
@@ -60,6 +66,10 @@ export const App = () => {
             },
         },
     })
+
+    const changeMode = () => {
+        setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+    }
 
     const createTodolist = (title: string) => {
         const todolistId = v1()
@@ -103,6 +113,7 @@ export const App = () => {
 
     return (
         <ThemeProvider theme={theme}>
+            <CssBaseline />
             <AppBar position="static" sx={{ mb: '30px' }}>
                 <Toolbar>
                     <Container maxWidth={'lg'}>
@@ -113,6 +124,7 @@ export const App = () => {
                             <NavButton>Sign in</NavButton>
                             <NavButton>Sign up</NavButton>
                             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
+                            <Switch color={'default'} onChange={changeMode} />
                         </div>
                     </Container>
                 </Toolbar>
