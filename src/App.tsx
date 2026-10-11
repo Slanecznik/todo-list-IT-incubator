@@ -5,12 +5,12 @@ import {v1} from "uuid";
 import CreateItemForm from "./CreateItemForm.tsx";
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
-import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
+import {NavButton} from "./NavButton.ts";
 
 export type Task = {
     id: string
@@ -102,9 +102,9 @@ export const App = () => {
                             <MenuIcon/>
                         </IconButton>
                         <div>
-                            <Button color="inherit">Sign in</Button>
-                            <Button color="inherit">Sign up</Button>
-                            <Button color="inherit">Faq</Button>
+                            <NavButton>Sign in</NavButton>
+                            <NavButton>Sign up</NavButton>
+                            <NavButton>Faq</NavButton>
                         </div>
                     </Container>
                 </Toolbar>
