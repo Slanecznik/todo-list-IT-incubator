@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import {Button, Checkbox} from "@mui/material";
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
+import Box from '@mui/material/Box'
 
 type Props = {
     todolist: Todolist,
@@ -84,9 +85,12 @@ export const TodolistItem = ({
                         }
 
                         return (
-                            <ListItem key={task.id} className={task.isDone ? 'is-done' : ''}>
-                                <Checkbox checked={task.isDone} onChange={changeTaskStatusHandler} />
-                                <EditableSpan value={task.title} onChange={changeTaskTitleHandler}/>
+                            <ListItem key={task.id}
+                                      sx={{p: 0, justifyContent: 'space-between', opacity: task.isDone ? 0.5 : 1}}>
+                                <div>
+                                    <Checkbox checked={task.isDone} onChange={changeTaskStatusHandler} />
+                                    <EditableSpan value={task.title} onChange={changeTaskTitleHandler} />
+                                </div>
                                 <IconButton onClick={deleteTaskHandler}>
                                     <DeleteIcon />
                                 </IconButton>
@@ -96,7 +100,7 @@ export const TodolistItem = ({
                 </List>
             )}
 
-            <div>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
                     <Button variant={filter === 'all' ? 'outlined' : 'text'}
                             color={'inherit'}
@@ -114,7 +118,7 @@ export const TodolistItem = ({
                         Completed
                     </Button>
                 </div>
-            </div>
+            </Box>
         </div>
     )
 }
