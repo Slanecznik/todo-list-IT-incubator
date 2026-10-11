@@ -1,10 +1,10 @@
 import {type ChangeEvent, type KeyboardEvent, useState} from 'react'
-// import {Button} from './Button'
-import Button from '@mui/material/Button'
 import {TextField} from "@mui/material";
 type Props = {
     onCreateItem: (title: string) => void
 }
+import AddBoxIcon from '@mui/icons-material/AddBox'
+import IconButton from '@mui/material/IconButton'
 
 const CreateItemForm = ({ onCreateItem }: Props) => {
     const [title, setTitle] = useState('')
@@ -42,7 +42,9 @@ const CreateItemForm = ({ onCreateItem }: Props) => {
                        helperText={error}
                        onChange={changeItemTitleHandler}
                        onKeyDown={createItemOnEnterHandler}/>
-            <Button variant="contained" onClick={createItemHandler}>+</Button>
+            <IconButton onClick={createItemHandler} color={'primary'}>
+                <AddBoxIcon />
+            </IconButton>
         </div>
     )
 }

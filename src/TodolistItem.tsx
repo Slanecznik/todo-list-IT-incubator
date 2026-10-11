@@ -8,6 +8,7 @@ import {Button, Checkbox} from "@mui/material";
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box'
+import {containerSx} from './TodolistItem.styles'
 
 type Props = {
     todolist: Todolist,
@@ -100,7 +101,7 @@ export const TodolistItem = ({
                 </List>
             )}
 
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box sx={containerSx}>
                 <div>
                     <Button variant={filter === 'all' ? 'outlined' : 'text'}
                             color={'inherit'}
