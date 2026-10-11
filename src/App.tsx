@@ -10,7 +10,8 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import {NavButton} from "./NavButton.ts";
+import {NavButton} from "./NavButton.ts"
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 export type Task = {
     id: string
@@ -52,6 +53,13 @@ export const App = () => {
         ],
     })
 
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#087EA4',
+            },
+        },
+    })
 
     const createTodolist = (title: string) => {
         const todolistId = v1()
@@ -94,7 +102,7 @@ export const App = () => {
     }
 
     return (
-        <div className="app">
+        <ThemeProvider theme={theme}>
             <AppBar position="static" sx={{ mb: '30px' }}>
                 <Toolbar>
                     <Container maxWidth={'lg'}>
@@ -104,7 +112,7 @@ export const App = () => {
                         <div>
                             <NavButton>Sign in</NavButton>
                             <NavButton>Sign up</NavButton>
-                            <NavButton background={'dodgerblue'}>Faq</NavButton>
+                            <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
                         </div>
                     </Container>
                 </Toolbar>
@@ -146,7 +154,7 @@ export const App = () => {
                     })}
                 </Grid>
             </Container>
-        </div>
+        </ThemeProvider>
     )
 }
 
