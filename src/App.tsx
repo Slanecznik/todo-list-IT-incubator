@@ -61,6 +61,7 @@ export const App = () => {
 
     const theme = createTheme({
         palette: {
+            mode: themeMode,
             primary: {
                 main: '#087EA4',
             },
@@ -85,7 +86,6 @@ export const App = () => {
     const changeFilter = (todolistId: string, filter: FilterValues) => {
         setTodolists(todolists.map(todolist => todolist.id === todolistId ? {...todolist, filter} : todolist))
     }
-
 
     const createTask = (todolistId: string, title: string) => {
         const newTask = {id: v1(), title, isDone: false}
@@ -124,7 +124,10 @@ export const App = () => {
                             <NavButton>Sign in</NavButton>
                             <NavButton>Sign up</NavButton>
                             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
-                            <Switch color={'default'} onChange={changeMode} />
+                            <Switch
+                                checked={themeMode === 'dark'}
+                                onChange={changeMode}
+                            />
                         </div>
                     </Container>
                 </Toolbar>
