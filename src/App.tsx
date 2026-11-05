@@ -27,6 +27,8 @@ import {
 } from './model/todolists-reducer'
 import {useAppDispatch} from "./common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "./common/hooks/useAppSelector.ts";
+import {selectTasks} from "./model/tasks-selectors.ts";
+import {selectTodolists} from "./model/todolists-selectors.ts";
 
 type ThemeMode = 'dark' | 'light'
 
@@ -50,8 +52,8 @@ export type FilterValues = 'all' | 'active' | 'completed'
 
 export const App = () => {
 
-    const todolists = useAppSelector(state => state.todolists)
-    const tasks = useAppSelector(state => state.tasks)
+    const todolists = useAppSelector(selectTodolists)
+    const tasks = useAppSelector(selectTasks)
 
     const dispatch = useAppDispatch()
 
