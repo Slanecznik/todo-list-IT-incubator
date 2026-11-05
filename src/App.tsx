@@ -25,8 +25,8 @@ import {
     changeTodolistTitleAC,
     changeTodolistFilterAC,
 } from './model/todolists-reducer'
-import { useSelector, useDispatch } from 'react-redux'
-import type { RootState, AppDispatch } from './app/store'
+import {useAppDispatch} from "./common/hooks/useAppDispatch.ts";
+import {useAppSelector} from "./common/hooks/useAppSelector.ts";
 
 type ThemeMode = 'dark' | 'light'
 
@@ -50,10 +50,10 @@ export type FilterValues = 'all' | 'active' | 'completed'
 
 export const App = () => {
 
-    const todolists = useSelector<RootState, Todolist[]>(state => state.todolists)
-    const tasks = useSelector<RootState, TasksState>(state => state.tasks)
+    const todolists = useAppSelector(state => state.todolists)
+    const tasks = useAppSelector(state => state.tasks)
 
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useAppDispatch()
 
     const changeFilter = (todolistId: string, filter: FilterValues) => {
         dispatch(changeTodolistFilterAC({id: todolistId, filter}))
