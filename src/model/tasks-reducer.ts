@@ -1,134 +1,105 @@
 import type { TasksState} from '../App'
-import {CreateTodolistAction, DeleteTodolistAction} from "./todolists-reducer.ts";
-import {v1} from "uuid";
+import {createTodolistAC, deleteTodolistAC} from "./todolists-reducer.ts";
+import {createAction, createReducer, nanoid} from '@reduxjs/toolkit'
 
 
 const initialState: TasksState = {}
 
-export const tasksReducer = (state: TasksState = initialState, action: Actions): TasksState => {
-    switch (action.type) {
-        case 'create_todolist': {
-            return { ...state, [action.payload.id]: [] }
-        }
-        case 'delete_todolist': {
-            const newState = { ...state }
-            delete newState[action.payload.id]
-            return newState
-        }
-        case 'delete_task': {
+export const tasksReducer = createReducer(initialState, builder => {
+    builder
+        .addCase(createTodolistAC, (state, action) => {
+            state[action.payload.id] = []
+        })
+
+        .addCase(deleteTodolistAC, (state, action) => {
+            delete state[action.payload.id]
+        })
+
+        .addCase(deleteTaskAC, (state, action) => {
             const tasks = state[action.payload.todolistId]
 
-            if (!tasks) return state
+            if (!tasks) return
 
-            return {
-                ...state,
-                [action.payload.todolistId]: tasks.filter(
-                    task => task.id !== action.payload.taskId
-                ),
+            const index = tasks.findIndex(
+                task => task.id === action.payload.taskId
+            )
+
+            if (index !== -1) {
+                tasks.splice(index, 1)
             }
-        }
-        case 'create_task': {
-            const todolistId = action.payload.todolistId
-            const tasks = state[todolistId]
+        })
 
-            if (!tasks) return state
+        .addCase(createTaskAC, (state, action) => {
+            const tasks = state[action.payload.todolistId]
 
-            return {
-                ...state,
-                [todolistId]: [
-                    action.payload.task,
-                    ...tasks,
-                ],
+            if (!tasks) return
+
+            tasks.unshift(action.payload.task)
+        })
+
+        .addCase(changeTaskStatusAC, (state, action) => {
+            // Получаем массив задач нужного TodoList
+            const tasks = state[action.payload.todolistId]
+
+            // Если такого списка нет, прекращаем обработку
+            if (!tasks) return
+
+            // Ищем задачу по её ID
+            const task = tasks.find(
+                task => task.id === action.payload.taskId
+            )
+
+            // Если задача найдена, меняем её статус
+            if (task) {
+                task.isDone = action.payload.isDone
             }
-        }
-        case 'change_task_status': {
-            const todolistId = action.payload.todolistId
-            const tasks = state[todolistId]
+        })
 
-            if (!tasks) return state
+        .addCase(changeTaskTitleAC, (state, action) => {
+            const tasks = state[action.payload.todolistId]
 
-            return {
-                ...state,
-                [todolistId]: tasks.map(task =>
-                    task.id === action.payload.taskId
-                        ? { ...task, isDone: action.payload.isDone }
-                        : task
-                ),
+            if (!tasks) return
+
+            const task = tasks.find(
+                task => task.id === action.payload.taskId
+            )
+
+            if (task) {
+                task.title = action.payload.title
             }
-        }
-        case 'change_task_title': {
-            const todolistId = action.payload.todolistId
-            const tasks = state[todolistId]
+        })
+})
 
-            if (!tasks) return state
-
-            return {
-                ...state,
-                [todolistId]: tasks.map(task =>
-                    task.id === action.payload.taskId
-                        ? { ...task, title: action.payload.title }
-                        : task
-                ),
-            }
-        }
-        default:
-            return state
-    }
-}
-
-export const deleteTaskAC = (payload: {
+export const deleteTaskAC = createAction<{
     todolistId: string
     taskId: string
-}) => ({
-    type: 'delete_task',
-    payload,
-} as const)
+}>('tasks/deleteTask')
 
-export type DeleteTaskAction = ReturnType<typeof deleteTaskAC>
+export const createTaskAC = createAction(
+    'tasks/createTask',
+    (payload: { todolistId: string; title: string }) => {
+        return {
+            payload: {
+                todolistId: payload.todolistId,
+                task: {
+                    id: nanoid(),
+                    title: payload.title,
+                    isDone: false,
+                },
+            },
+        }
+    }
+)
 
-export const createTaskAC = (payload: {
-    todolistId: string
-    title: string
-}) => ({
-    type: 'create_task',
-    payload: {
-        todolistId: payload.todolistId,
-        task: {
-            id: v1(),
-            title: payload.title,
-            isDone: false,
-        },
-    },
-} as const)
-
-export type CreateTaskAction = ReturnType<typeof createTaskAC>
-
-export const changeTaskStatusAC = (payload: {
+export const changeTaskStatusAC = createAction<{
     todolistId: string
     taskId: string
     isDone: boolean
-}) => ({
-    type: 'change_task_status',
-    payload,
-} as const)
+}>('tasks/changeTaskStatus')
 
-export type ChangeTaskStatusAction = ReturnType<typeof changeTaskStatusAC>
-
-export const changeTaskTitleAC = (payload: {
+export const changeTaskTitleAC = createAction<{
     todolistId: string
     taskId: string
     title: string
-}) => ({
-    type: 'change_task_title',
-    payload,
-} as const)
+}>('tasks/changeTaskTitle')
 
-export type ChangeTaskTitleAction = ReturnType<typeof changeTaskTitleAC>
-
-type Actions =
-    | CreateTodolistAction
-    | DeleteTodolistAction
-    | DeleteTaskAction
-    | CreateTaskAction
-    | ChangeTaskStatusAction
-    | ChangeTaskTitleAction
