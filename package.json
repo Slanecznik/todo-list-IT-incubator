@@ -25,7 +25,8 @@
     "@vitejs/plugin-react-swc": "3.7.2",
     "globals": "15.14.0",
     "typescript": "5.7.2",
-    "vite": "6.0.6",
-    "vitest": "^2.1.8"
-  }
+    "vite": "6.4.5",
+    "vitest": "3.2.6"
+  },
+  "packageManager": "pnpm@12.18.0+sha512.9d7882d5dc82147ecfc4e062aa34834e0ad0296710a1837a1115ae012127d36b7109e321ac1598a1dd0a65597681b1e99917e12ed0d749eae91187943363beb3"
 }
