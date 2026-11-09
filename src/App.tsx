@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
     deleteTaskAC,
     createTaskAC,
@@ -29,8 +28,8 @@ import {useAppDispatch} from "./common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "./common/hooks/useAppSelector.ts";
 import {selectTasks} from "./model/tasks-selectors.ts";
 import {selectTodolists} from "./model/todolists-selectors.ts";
-
-type ThemeMode = 'dark' | 'light'
+import { selectThemeMode } from './app/app-selectors'
+import { changeThemeModeAC } from './app/app-reducer'
 
 export type Task = {
     id: string
@@ -89,7 +88,7 @@ export const App = () => {
         dispatch(changeTaskTitleAC({todolistId, taskId, title}))
     }
 
-    const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+    const themeMode = useAppSelector(selectThemeMode)
 
     const theme = createTheme({
         palette: {
@@ -101,9 +100,10 @@ export const App = () => {
     })
 
     const changeMode = () => {
-        setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+        dispatch(changeThemeModeAC({
+            themeMode: themeMode === 'light' ? 'dark' : 'light'
+        }))
     }
-
 
     return (
         <ThemeProvider theme={theme}>
