@@ -15,7 +15,7 @@ import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import {NavButton} from "./NavButton.ts"
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { ThemeProvider } from '@mui/material/styles'
 import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
 import {
@@ -30,6 +30,7 @@ import {selectTasks} from "./model/tasks-selectors.ts";
 import {selectTodolists} from "./model/todolists-selectors.ts";
 import { selectThemeMode } from './app/app-selectors'
 import { changeThemeModeAC } from './app/app-reducer'
+import {getTheme} from "./common/theme/theme.ts";
 
 export type Task = {
     id: string
@@ -90,14 +91,7 @@ export const App = () => {
 
     const themeMode = useAppSelector(selectThemeMode)
 
-    const theme = createTheme({
-        palette: {
-            mode: themeMode,
-            primary: {
-                main: '#087EA4',
-            },
-        },
-    })
+    const theme = getTheme(themeMode)
 
     const changeMode = () => {
         dispatch(changeThemeModeAC({
