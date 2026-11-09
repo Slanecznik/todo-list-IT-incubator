@@ -1,4 +1,4 @@
-import type { Todolist } from '../App'
+import type { Todolist } from '@/App'
 import { createAction, createReducer, nanoid } from '@reduxjs/toolkit'
 
 const initialState: Todolist[] = []

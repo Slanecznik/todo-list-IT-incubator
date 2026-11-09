@@ -1,6 +1,6 @@
 
-import type { TasksState } from '../App'
-import { createTodolistAC, deleteTodolistAC } from './todolists-reducer.ts'
+import type { TasksState } from '@/App'
+import { createTodolistAC, deleteTodolistAC } from '@/model/todolists-reducer'
 import { createAction, createReducer, nanoid } from '@reduxjs/toolkit'
 
 // Начальное состояние

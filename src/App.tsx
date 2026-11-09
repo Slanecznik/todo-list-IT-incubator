@@ -3,10 +3,26 @@ import {
     createTaskAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
-} from './model/tasks-reducer'
-import './App.css'
-import {TodolistItem} from "./TodolistItem.tsx";
-import CreateItemForm from "./CreateItemForm.tsx";
+} from '@/model/tasks-reducer'
+
+import { TodolistItem } from '@/TodolistItem'
+import CreateItemForm from '@/CreateItemForm'
+import { NavButton } from '@/NavButton'
+
+import {
+    createTodolistAC,
+    deleteTodolistAC,
+    changeTodolistTitleAC,
+    changeTodolistFilterAC,
+} from '@/model/todolists-reducer'
+
+import { useAppDispatch } from '@/common/hooks/useAppDispatch'
+import { useAppSelector } from '@/common/hooks/useAppSelector'
+import { selectTasks } from '@/model/tasks-selectors'
+import { selectTodolists } from '@/model/todolists-selectors'
+import { selectThemeMode } from '@/app/app-selectors'
+import { changeThemeModeAC } from '@/app/app-reducer'
+import { getTheme } from '@/common/theme/theme'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
@@ -14,23 +30,9 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import {NavButton} from "./NavButton.ts"
 import { ThemeProvider } from '@mui/material/styles'
 import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
-import {
-    createTodolistAC,
-    deleteTodolistAC,
-    changeTodolistTitleAC,
-    changeTodolistFilterAC,
-} from './model/todolists-reducer'
-import {useAppDispatch} from "./common/hooks/useAppDispatch.ts";
-import {useAppSelector} from "./common/hooks/useAppSelector.ts";
-import {selectTasks} from "./model/tasks-selectors.ts";
-import {selectTodolists} from "./model/todolists-selectors.ts";
-import { selectThemeMode } from './app/app-selectors'
-import { changeThemeModeAC } from './app/app-reducer'
-import {getTheme} from "./common/theme/theme.ts";
 
 export type Task = {
     id: string
