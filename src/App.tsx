@@ -7,7 +7,7 @@ import {
 
 import { TodolistItem } from '@/TodolistItem'
 import CreateItemForm from '@/CreateItemForm'
-import { NavButton } from '@/NavButton'
+import type { Task } from '@/model/tasks-reducer'
 
 import {
     createTodolistAC,
@@ -16,41 +16,24 @@ import {
     changeTodolistFilterAC,
 } from '@/model/todolists-reducer'
 
+import type { FilterValues } from '@/model/todolists-reducer'
+
 import { useAppDispatch } from '@/common/hooks/useAppDispatch'
 import { useAppSelector } from '@/common/hooks/useAppSelector'
+
 import { selectTasks } from '@/model/tasks-selectors'
 import { selectTodolists } from '@/model/todolists-selectors'
 import { selectThemeMode } from '@/app/app-selectors'
-import { changeThemeModeAC } from '@/app/app-reducer'
+
 import { getTheme } from '@/common/theme/theme'
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
+import { Header } from '@/common/components/Header/Header'
+
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { ThemeProvider } from '@mui/material/styles'
-import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
 
-export type Task = {
-    id: string
-    title: string
-    isDone: boolean
-}
-
-export type Todolist = {
-    id: string
-    title: string
-    filter: FilterValues
-}
-
-export type TasksState = {
-    [key: string]: Task[]
-}
-
-export type FilterValues = 'all' | 'active' | 'completed'
 
 export const App = () => {
 
@@ -60,7 +43,7 @@ export const App = () => {
     const dispatch = useAppDispatch()
 
     const changeFilter = (todolistId: string, filter: FilterValues) => {
-        dispatch(changeTodolistFilterAC({id: todolistId, filter}))
+        dispatch(changeTodolistFilterAC({ id: todolistId, filter }))
     }
 
     const createTodolist = (title: string) => {
@@ -68,81 +51,60 @@ export const App = () => {
     }
 
     const deleteTodolist = (todolistId: string) => {
-        dispatch(deleteTodolistAC({id: todolistId}))
+        dispatch(deleteTodolistAC({ id: todolistId }))
     }
 
     const changeTodolistTitle = (todolistId: string, title: string) => {
-        dispatch(changeTodolistTitleAC({id: todolistId, title}))
+        dispatch(changeTodolistTitleAC({ id: todolistId, title }))
     }
 
     const deleteTask = (todolistId: string, taskId: string) => {
-        dispatch(deleteTaskAC({todolistId, taskId}))
+        dispatch(deleteTaskAC({ todolistId, taskId }))
     }
 
     const createTask = (todolistId: string, title: string) => {
-        dispatch(createTaskAC({todolistId, title}))
+        dispatch(createTaskAC({ todolistId, title }))
     }
 
     const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-        dispatch(changeTaskStatusAC({todolistId, taskId, isDone}))
+        dispatch(changeTaskStatusAC({ todolistId, taskId, isDone }))
     }
 
     const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
-        dispatch(changeTaskTitleAC({todolistId, taskId, title}))
+        dispatch(changeTaskTitleAC({ todolistId, taskId, title }))
     }
 
     const themeMode = useAppSelector(selectThemeMode)
-
     const theme = getTheme(themeMode)
-
-    const changeMode = () => {
-        dispatch(changeThemeModeAC({
-            themeMode: themeMode === 'light' ? 'dark' : 'light'
-        }))
-    }
 
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AppBar position="static" sx={{ mb: '30px' }}>
-                <Toolbar>
-                    <Container maxWidth={'lg'}>
-                        <IconButton color="inherit">
-                            <MenuIcon/>
-                        </IconButton>
-                        <div>
-                            <NavButton>Sign in</NavButton>
-                            <NavButton>Sign up</NavButton>
-                            <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
-                            <Switch
-                                checked={themeMode === 'dark'}
-                                onChange={changeMode}
-                            />
-                        </div>
-                    </Container>
-                </Toolbar>
-            </AppBar>
+
+            <Header />
+
             <Container maxWidth={'lg'}>
                 <Grid container sx={{ mb: '30px' }}>
-                    <CreateItemForm onCreateItem={createTodolist}/>
+                    <CreateItemForm onCreateItem={createTodolist} />
                 </Grid>
 
                 <Grid container spacing={4}>
                     {todolists.map(todolist => {
                         const todolistTasks = tasks[todolist.id]
                         let filteredTasks = todolistTasks
+
                         if (todolist.filter === 'active') {
-                            filteredTasks = todolistTasks.filter(task => !task.isDone)
+                            filteredTasks = todolistTasks.filter((task: Task) => !task.isDone)
                         }
+
                         if (todolist.filter === 'completed') {
-                            filteredTasks = todolistTasks.filter(task => task.isDone)
+                            filteredTasks = todolistTasks.filter((task: Task) => task.isDone)
                         }
 
                         return (
                             <Grid key={todolist.id}>
                                 <Paper sx={{ p: '0 20px 20px 20px' }}>
                                     <TodolistItem
-                                        key={todolist.id}
                                         todolist={todolist}
                                         tasks={filteredTasks}
                                         deleteTask={deleteTask}
@@ -162,4 +124,3 @@ export const App = () => {
         </ThemeProvider>
     )
 }
-

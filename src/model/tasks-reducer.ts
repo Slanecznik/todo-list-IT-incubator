@@ -1,9 +1,17 @@
 
-import type { TasksState } from '@/App'
 import { createTodolistAC, deleteTodolistAC } from '@/model/todolists-reducer'
 import { createAction, createReducer, nanoid } from '@reduxjs/toolkit'
 
-// Начальное состояние
+export type Task = {
+    id: string
+    title: string
+    isDone: boolean
+}
+
+export type TasksState = {
+    [key: string]: Task[]
+}
+
 const initialState: TasksState = {}
 
 // 1. Action Creators
